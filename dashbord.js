@@ -2,10 +2,8 @@
 let currentUser = null;
 
 document.addEventListener('DOMContentLoaded', async () => {
-    // Wait for auth state
     auth.onAuthStateChanged(async (user) => {
         if (!user) {
-            // Not logged in, redirect to index
             window.location.href = 'index.html';
             return;
         }
@@ -23,9 +21,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             window.location.href = expectedPage;
             return;
         }
-        // Update UI with user data
         updateUserUI(userData);
-        // Initialize dashboard features based on type
         if (isSenior) {
             initSeniorDashboard(user.uid);
         } else {
@@ -36,13 +32,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 function updateUserUI(userData) {
-    // Update welcome message
     const welcomeH1 = document.querySelector('.header-left h1');
     if (welcomeH1) {
         const firstName = userData.fullName.split(' ')[0];
         welcomeH1.innerHTML = `Welcome, ${firstName}!`;
     }
-    // Update sidebar user info
     const userNameElements = document.querySelectorAll('.user-details h4');
     userNameElements.forEach(el => el.textContent = userData.fullName);
     const userTypeElements = document.querySelectorAll('.user-details p:first-child');
@@ -51,7 +45,6 @@ function updateUserUI(userData) {
             (userData.specialization || 'Senior Expert') : 
             (userData.role || 'Junior Member');
     }
-    // For senior, show status and toggle
     if (userData.userType === 'senior') {
         const statusSpan = document.querySelector('.status');
         if (statusSpan) {
@@ -66,31 +59,21 @@ function updateUserUI(userData) {
     }
 }
 
-// Junior Dashboard
+// ==================== JUNIOR DASHBOARD ====================
 async function initJuniorDashboard(userId) {
-    // Load upcoming sessions (accepted sessions where junior is participant)
     loadUpcomingSessions(userId, 'junior');
-    // Load recommended experts (all seniors)
     loadRecommendedExperts();
-    // Handle "Find Expert" button
     const findExpertBtn = document.getElementById('findExpertBtn');
     if (findExpertBtn) findExpertBtn.onclick = () => showExpertSearchModal();
-    // Handle category clicks
     window.searchCategory = (category) => {
         showAlert(`Searching for experts in ${category}...`, 'info');
         showExpertSearchModal(category);
     };
-    // Load stats (count of sessions, ratings etc)
     loadJuniorStats(userId);
-    // Real-time listener for session updates
     db.collection('sessions').where('juniorId', '==', userId)
-        .onSnapshot(snapshot => {
-            snapshot.docChanges().forEach(change => {
-                if (change.type === 'added' || change.type === 'modified') {
-                    loadUpcomingSessions(userId, 'junior');
-                    loadJuniorStats(userId);
-                }
-            });
+        .onSnapshot(() => {
+            loadUpcomingSessions(userId, 'junior');
+            loadJuniorStats(userId);
         });
 }
 
@@ -108,11 +91,10 @@ async function loadJuniorStats(userId) {
         .where('status', '==', 'scheduled')
         .get();
     const upcomingCount = upcoming.size;
-    // Update stats cards
     const stats = document.querySelectorAll('.stat-card');
     if (stats.length >= 4) {
         stats[0].querySelector('.stat-info h3').textContent = totalSessions;
-        stats[1].querySelector('.stat-info h3').textContent = '4.8'; // Placeholder for rating
+        stats[1].querySelector('.stat-info h3').textContent = '4.8';
         stats[2].querySelector('.stat-info h3').textContent = `₹${totalSpent}`;
         stats[3].querySelector('.stat-info h3').textContent = upcomingCount;
     }
@@ -142,7 +124,6 @@ function createSessionCard(session, userType, sessionId) {
     const div = document.createElement('div');
     div.className = 'session-card';
     const otherPerson = userType === 'junior' ? session.seniorName : session.juniorName;
-    const otherRole = userType === 'junior' ? 'Senior Expert' : 'Junior';
     div.innerHTML = `
         <div class="session-info">
             <div class="expert-avatar">
@@ -166,7 +147,6 @@ function createSessionCard(session, userType, sessionId) {
     const joinBtn = div.querySelector('.join');
     joinBtn.addEventListener('click', () => {
         showAlert('Opening video call...', 'info');
-        // In real app, redirect to video call room
     });
     const rescheduleBtn = div.querySelector('.reschedule');
     rescheduleBtn.addEventListener('click', () => {
@@ -177,7 +157,6 @@ function createSessionCard(session, userType, sessionId) {
                 showAlert('Invalid date format', 'error');
                 return;
             }
-            // Update in Firestore
             db.collection('sessions').doc(sessionId).update({
                 dateTime: newDateTime.toISOString()
             }).then(() => showAlert('Session rescheduled', 'success'))
@@ -190,15 +169,11 @@ function createSessionCard(session, userType, sessionId) {
 async function loadRecommendedExperts(category = null) {
     const expertsGrid = document.querySelector('.experts-grid');
     if (!expertsGrid) return;
-    let query = db.collection('users').where('userType', '==', 'senior');
-    // Note: Firestore doesn't support array-contains for string directly, but we can filter on client side for simplicity
-    // For better performance, you'd want to store specialization as a string and use equality, but here we'll filter after fetch.
-    const snapshot = await query.get();
+    const snapshot = await db.collection('users').where('userType', '==', 'senior').get();
     let experts = [];
     snapshot.forEach(doc => {
         const data = doc.data();
         if (category && data.specialization && !data.specialization.toLowerCase().includes(category.toLowerCase())) {
-            // Not matching category, skip
             return;
         }
         experts.push({ id: doc.id, ...data });
@@ -322,7 +297,6 @@ function showBookingModal(expertId, expertName) {
 }
 
 function showExpertSearchModal(category = null) {
-    // Create a modal to search experts
     const modal = document.createElement('div');
     modal.className = 'modal';
     modal.innerHTML = `
@@ -354,8 +328,6 @@ function showExpertSearchModal(category = null) {
     document.body.appendChild(modal);
     modal.style.display = 'block';
     document.body.style.overflow = 'hidden';
-
-    // Close modal
     const close = modal.querySelector('.close-modal');
     close.onclick = () => {
         modal.remove();
@@ -367,13 +339,10 @@ function showExpertSearchModal(category = null) {
             document.body.style.overflow = 'auto';
         }
     };
-
-    // Load experts
     async function loadExperts(categoryFilter = null) {
         const resultsDiv = modal.querySelector('#searchResults');
         resultsDiv.innerHTML = '<div style="text-align: center; padding: 40px;">Loading...</div>';
-        let query = db.collection('users').where('userType', '==', 'senior');
-        const snapshot = await query.get();
+        const snapshot = await db.collection('users').where('userType', '==', 'senior').get();
         let experts = [];
         snapshot.forEach(doc => {
             const data = doc.data();
@@ -392,11 +361,7 @@ function showExpertSearchModal(category = null) {
             resultsDiv.appendChild(card);
         });
     }
-
-    // Initial load
     loadExperts(category);
-
-    // Search input
     const searchInput = modal.querySelector('#expertSearchInput');
     searchInput.addEventListener('input', async () => {
         const searchTerm = searchInput.value.toLowerCase();
@@ -421,8 +386,6 @@ function showExpertSearchModal(category = null) {
             resultsDiv.appendChild(card);
         });
     });
-
-    // Category buttons
     const catButtons = modal.querySelectorAll('[data-category]');
     catButtons.forEach(btn => {
         btn.addEventListener('click', () => {
@@ -432,17 +395,12 @@ function showExpertSearchModal(category = null) {
     });
 }
 
-// Senior Dashboard
+// ==================== SENIOR DASHBOARD ====================
 async function initSeniorDashboard(userId) {
-    // Load today's schedule
     loadSeniorSchedule(userId);
-    // Load recent sessions
     loadRecentSessions(userId);
-    // Load pending requests
     loadPendingRequests(userId);
-    // Load stats
     loadSeniorStats(userId);
-    // Real-time listeners
     db.collection('session_requests').where('seniorId', '==', userId)
         .where('status', '==', 'pending')
         .onSnapshot(() => loadPendingRequests(userId));
@@ -452,7 +410,6 @@ async function initSeniorDashboard(userId) {
             loadRecentSessions(userId);
             loadSeniorStats(userId);
         });
-    // Availability toggle
     const toggle = document.querySelector('.switch input');
     if (toggle) {
         toggle.addEventListener('change', async (e) => {
@@ -518,7 +475,6 @@ function createScheduleItem(session, sessionId) {
     const startBtn = div.querySelector('.start');
     startBtn.onclick = () => {
         showAlert('Starting video session...', 'success');
-        // In real app, redirect to video room
     };
     return div;
 }
@@ -600,7 +556,6 @@ function createRequestCard(request, requestId) {
     };
     const acceptBtn = div.querySelector('.accept');
     acceptBtn.onclick = async () => {
-        // Create a session from this request
         const sessionData = {
             seniorId: request.seniorId,
             seniorName: request.seniorName,
@@ -611,9 +566,8 @@ function createRequestCard(request, requestId) {
             duration: request.duration,
             status: 'scheduled',
             createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-            amount: 0 // will be calculated based on hourly rate
+            amount: 0
         };
-        // Get senior's hourly rate
         const seniorDoc = await db.collection('users').doc(request.seniorId).get();
         if (seniorDoc.exists) {
             const rate = seniorDoc.data().hourlyRate || 0;
@@ -650,9 +604,8 @@ async function loadSeniorStats(userId) {
     }
 }
 
-// Common features
+// ==================== COMMON FEATURES ====================
 function initCommonFeatures() {
-    // Logout
     const logoutLinks = document.querySelectorAll('.logout');
     logoutLinks.forEach(link => {
         link.addEventListener('click', (e) => {
@@ -662,7 +615,6 @@ function initCommonFeatures() {
             }
         });
     });
-    // Mobile menu toggle
     const menuToggle = document.querySelector('.dashboard-menu-toggle');
     const sidebar = document.querySelector('.sidebar');
     if (menuToggle && sidebar) {
@@ -677,7 +629,6 @@ function initCommonFeatures() {
             }
         });
     }
-    // Notification bell (optional)
     const notificationBell = document.querySelector('.notification');
     if (notificationBell) {
         notificationBell.addEventListener('click', () => {
