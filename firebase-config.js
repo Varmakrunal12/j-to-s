@@ -1,4 +1,5 @@
 // Your Firebase configuration
+console.log("Firebase initialized!", auth);
 // Replace with your own project's config
 const firebaseConfig = {
   apiKey: "AIzaSyAtGGnQBptMwGJ74S0qzm8WZDotoPUDqaA",
