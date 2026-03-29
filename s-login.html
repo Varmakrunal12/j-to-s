@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Senior Login - WisdomBridge</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="animation.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="script.js"></script>
+</head>
+<body class="login-page">
+    <div class="login-container">
+        <div class="login-header">
+            <a href="index.html" class="back-home">
+                <i class="fas fa-arrow-left"></i> Back to Home
+            </a>
+            <div class="logo">
+                <i class="fas fa-bridge"></i> WisdomBridge
+            </div>
+            <h1>Welcome Back, Expert!</h1>
+            <p>Share your wisdom and experience with the next generation</p>
+        </div>
+
+        <div class="login-card">
+            <div class="login-tabs">
+                <button class="tab-btn active" data-tab="login">Login</button>
+                <button class="tab-btn" data-tab="register">Register as Expert</button>
+            </div>
+
+            <!-- Login Form -->
+            <div class="tab-content active" id="login">
+                <form id="seniorLoginForm">
+                    <div class="form-group">
+                        <label for="seniorEmail">
+                            <i class="fas fa-envelope"></i> Email
+                        </label>
+                        <input type="email" id="seniorEmail" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="seniorPassword">
+                            <i class="fas fa-lock"></i> Password
+                        </label>
+                        <input type="password" id="seniorPassword" placeholder="Enter password" required>
+                    </div>
+                    <div class="form-options">
+                        <label class="checkbox">
+                            <input type="checkbox"> Remember me
+                        </label>
+                        <a href="#" class="forgot-password">Forgot Password?</a>
+                    </div>
+                    <button type="submit" class="btn btn-secondary btn-block">
+                        <i class="fas fa-sign-in-alt"></i> Expert Login
+                    </button>
+                </form>
+            </div>
+
+            <!-- Registration Form -->
+            <div class="tab-content" id="register">
+                <form id="seniorRegisterForm">
+                    <div class="form-group">
+                        <label for="expertName">
+                            <i class="fas fa-user"></i> Full Name
+                        </label>
+                        <input type="text" id="expertName" placeholder="Enter your full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="expertEmail">
+                            <i class="fas fa-envelope"></i> Email
+                        </label>
+                        <input type="email" id="expertEmail" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="expertPassword">
+                            <i class="fas fa-lock"></i> Password
+                        </label>
+                        <input type="password" id="expertPassword" placeholder="Create password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="expertExperience">
+                            <i class="fas fa-briefcase"></i> Years of Experience
+                        </label>
+                        <select id="expertExperience" required>
+                            <option value="">Select years</option>
+                            <option value="20+">20+ years</option>
+                            <option value="25+">25+ years</option>
+                            <option value="30+">30+ years</option>
+                            <option value="35+">35+ years</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="expertIndustry">
+                            <i class="fas fa-industry"></i> Industry
+                        </label>
+                        <select id="expertIndustry" required>
+                            <option value="">Select industry</option>
+                            <option value="technology">Technology</option>
+                            <option value="finance">Finance & Banking</option>
+                            <option value="manufacturing">Manufacturing</option>
+                            <option value="healthcare">Healthcare</option>
+                            <option value="education">Education</option>
+                            <option value="consulting">Consulting</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="expertSpecialization">
+                            <i class="fas fa-star"></i> Specialization
+                        </label>
+                        <input type="text" id="expertSpecialization" placeholder="e.g., Business Strategy, IT Management" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="expertRate">
+                            <i class="fas fa-rupee-sign"></i> Hourly Rate (₹)
+                        </label>
+                        <input type="number" id="expertRate" placeholder="e.g., 1500" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="expertBio">
+                            <i class="fas fa-file-alt"></i> Bio/Experience Summary
+                        </label>
+                        <textarea id="expertBio" rows="3" placeholder="Briefly describe your experience and expertise"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="checkbox">
+                            <input type="checkbox" required>
+                            I confirm I have retired from full-time employment
+                        </label>
+                        <label class="checkbox">
+                            <input type="checkbox" required>
+                            I agree to <a href="#">Terms & Conditions</a>
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn-secondary btn-block">
+                        <i class="fas fa-user-tie"></i> Register as Expert
+                    </button>
+                </form>
+            </div>
+
+            <div class="login-footer">
+                <p>Are you seeking guidance? <a href="j-login.html">Join as Junior</a></p>
+            </div>
+        </div>
+
+        <div class="login-features">
+            <div class="feature">
+                <i class="fas fa-money-bill-wave"></i>
+                <h3>Earn Fairly</h3>
+                <p>Set your own rates and get paid for your expertise</p>
+            </div>
+            <div class="feature">
+                <i class="fas fa-calendar-alt"></i>
+                <h3>Flexible Schedule</h3>
+                <p>Work when you want, from anywhere</p>
+            </div>
+            <div class="feature">
+                <i class="fas fa-handshake"></i>
+                <h3>Make Impact</h3>
+                <p>Guide the next generation of professionals</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab switching
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+                document.getElementById(btn.dataset.tab).classList.add('active');
+            });
+        });
+
+        // Login form
+        document.getElementById('seniorLoginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('seniorEmail').value;
+            const password = document.getElementById('seniorPassword').value;
+            await handleLogin(email, password, 'senior');
+        });
+
+        // Register form
+        document.getElementById('seniorRegisterForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const userData = {
+                email: document.getElementById('expertEmail').value,
+                password: document.getElementById('expertPassword').value,
+                fullName: document.getElementById('expertName').value,
+                experience: document.getElementById('expertExperience').value,
+                industry: document.getElementById('expertIndustry').value,
+                specialization: document.getElementById('expertSpecialization').value,
+                hourlyRate: document.getElementById('expertRate').value,
+                bio: document.getElementById('expertBio').value
+            };
+            await handleRegister(userData, 'senior');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Junior Login - WisdomBridge</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="animation.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="script.js"></script>
+</head>
+<body class="login-page">
+    <div class="login-container">
+        <div class="login-header">
+            <a href="index.html" class="back-home">
+                <i class="fas fa-arrow-left"></i> Back to Home
+            </a>
+            <div class="logo">
+                <i class="fas fa-bridge"></i> WisdomBridge
+            </div>
+            <h1>Welcome, Junior Innovator!</h1>
+            <p>Connect with experienced professionals to accelerate your growth</p>
+        </div>
+
+        <div class="login-card">
+            <div class="login-tabs">
+                <button class="tab-btn active" data-tab="login">Login</button>
+                <button class="tab-btn" data-tab="register">Register</button>
+            </div>
+
+            <!-- Login Form -->
+            <div class="tab-content active" id="login">
+                <form id="juniorLoginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">
+                            <i class="fas fa-envelope"></i> Email
+                        </label>
+                        <input type="email" id="loginEmail" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">
+                            <i class="fas fa-lock"></i> Password
+                        </label>
+                        <input type="password" id="loginPassword" placeholder="Enter password" required>
+                    </div>
+                    <div class="form-options">
+                        <label class="checkbox">
+                            <input type="checkbox"> Remember me
+                        </label>
+                        <a href="#" class="forgot-password">Forgot Password?</a>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </button>
+                    <div class="divider">
+                        <span>or</span>
+                    </div>
+                    <button type="button" class="btn btn-google">
+                        <i class="fab fa-google"></i> Continue with Google
+                    </button>
+                </form>
+            </div>
+
+            <!-- Registration Form -->
+            <div class="tab-content" id="register">
+                <form id="juniorRegisterForm">
+                    <div class="form-group">
+                        <label for="regName">
+                            <i class="fas fa-user"></i> Full Name
+                        </label>
+                        <input type="text" id="regName" placeholder="Enter your full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="regEmail">
+                            <i class="fas fa-envelope"></i> Email
+                        </label>
+                        <input type="email" id="regEmail" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="regPassword">
+                            <i class="fas fa-lock"></i> Password
+                        </label>
+                        <input type="password" id="regPassword" placeholder="Create password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="regType">
+                            <i class="fas fa-briefcase"></i> You are:
+                        </label>
+                        <select id="regType" required>
+                            <option value="">Select your role</option>
+                            <option value="startup">Startup Founder</option>
+                            <option value="student">Student</option>
+                            <option value="professional">Young Professional</option>
+                            <option value="entrepreneur">Entrepreneur</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="regCategory">
+                            <i class="fas fa-tags"></i> Primary Interest
+                        </label>
+                        <select id="regCategory" required>
+                            <option value="">Select category</option>
+                            <option value="business">Business & Strategy</option>
+                            <option value="technology">Technology</option>
+                            <option value="finance">Finance & Legal</option>
+                            <option value="marketing">Marketing</option>
+                            <option value="operations">Operations</option>
+                            <option value="career">Career Guidance</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="checkbox">
+                            <input type="checkbox" required>
+                            I agree to <a href="#">Terms & Conditions</a> and <a href="#">Privacy Policy</a>
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">
+                        <i class="fas fa-user-plus"></i> Create Account
+                    </button>
+                </form>
+            </div>
+
+            <div class="login-footer">
+                <p>Are you a Senior Expert? <a href="s-login.html">Click here</a></p>
+            </div>
+        </div>
+
+        <div class="login-features">
+            <div class="feature">
+                <i class="fas fa-search"></i>
+                <h3>Find Experts</h3>
+                <p>Search from 1000+ verified retired professionals</p>
+            </div>
+            <div class="feature">
+                <i class="fas fa-video"></i>
+                <h3>Flexible Sessions</h3>
+                <p>1:1 video calls, chat, or screen sharing</p>
+            </div>
+            <div class="feature">
+                <i class="fas fa-shield-alt"></i>
+                <h3>Secure Platform</h3>
+                <p>Your payments and data are protected</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab switching
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+                document.getElementById(btn.dataset.tab).classList.add('active');
+            });
+        });
+
+        // Login form
+        document.getElementById('juniorLoginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            await handleLogin(email, password, 'junior');
+        });
+
+        // Register form
+        document.getElementById('juniorRegisterForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const userData = {
+                email: document.getElementById('regEmail').value,
+                password: document.getElementById('regPassword').value,
+                fullName: document.getElementById('regName').value,
+                role: document.getElementById('regType').value,
+                primaryInterest: document.getElementById('regCategory').value
+            };
+            await handleRegister(userData, 'junior');
+        });
+    </script>
+</body>
+</html>

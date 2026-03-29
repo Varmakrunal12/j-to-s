@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WisdomBridge - Connect Experience with Ambition</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="animation.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="script.js"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-bridge"></i> WisdomBridge
+            </a>
+            <div class="nav-links">
+                <a href="#how-it-works">How It Works</a>
+                <a href="#features">Features</a>
+                <a href="#categories">Categories</a>
+                <a href="#" class="btn-login" id="loginBtn">Login</a>
+            </div>
+            <button class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Where Experience Meets Ambition</h1>
+                <p>Connect directly with retired professionals for expert guidance or share your knowledge to help the next generation succeed.</p>
+                <div class="hero-buttons">
+                    <a href="j-login.html" class="btn btn-primary">
+                        <i class="fas fa-graduation-cap"></i> I Need Guidance
+                    </a>
+                    <a href="s-login.html" class="btn btn-secondary">
+                        <i class="fas fa-user-tie"></i> I'm an Expert
+                    </a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Mentorship">
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section id="how-it-works" class="section">
+        <div class="container">
+            <h2 class="section-title">How WisdomBridge Works</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Sign Up</h3>
+                    <p>Register as a Junior seeking guidance or as a Senior expert</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Connect</h3>
+                    <p>Find the perfect match based on skills, experience, and needs</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Schedule Session</h3>
+                    <p>Book a consultation at mutually convenient time</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h3>Learn & Earn</h3>
+                    <p>Share knowledge, solve problems, and get fair compensation</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories -->
+    <section id="categories" class="section bg-light">
+        <div class="container">
+            <h2 class="section-title">Expertise Categories</h2>
+            <div class="categories-grid">
+                <div class="category-card">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>Business & Strategy</h3>
+                    <p>Startup guidance, business planning, marketing</p>
+                </div>
+                <div class="category-card">
+                    <i class="fas fa-code"></i>
+                    <h3>Technology</h3>
+                    <p>Software development, IT consulting, tech stacks</p>
+                </div>
+                <div class="category-card">
+                    <i class="fas fa-balance-scale"></i>
+                    <h3>Legal & Finance</h3>
+                    <p>Compliance, accounting, financial planning</p>
+                </div>
+                <div class="category-card">
+                    <i class="fas fa-industry"></i>
+                    <h3>Manufacturing</h3>
+                    <p>Production, operations, supply chain</p>
+                </div>
+                <div class="category-card">
+                    <i class="fas fa-heartbeat"></i>
+                    <h3>Healthcare</h3>
+                    <p>Medical practice, healthcare management</p>
+                </div>
+                <div class="category-card">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h3>Career Guidance</h3>
+                    <p>Resume building, interview preparation</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section id="features" class="section">
+        <div class="container">
+            <h2 class="section-title">Why Choose WisdomBridge</h2>
+            <div class="features">
+                <div class="feature">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Secure Payments</h3>
+                    <p>Escrow-based secure payment system</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-star"></i>
+                    <h3>Verified Experts</h3>
+                    <p>All seniors are verified with background check</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-video"></i>
+                    <h3>Flexible Sessions</h3>
+                    <p>Video, audio, or chat-based consultations</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-clock"></i>
+                    <h3>Flexible Timing</h3>
+                    <p>Schedule sessions as per your convenience</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>WisdomBridge</h3>
+                    <p>Bridging generations through knowledge sharing</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <a href="#how-it-works">How It Works</a>
+                    <a href="#categories">Categories</a>
+                    <a href="#features">Features</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Join As</h3>
+                    <a href="j-login.html">Junior / Startup</a>
+                    <a href="s-login.html">Senior Expert</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 WisdomBridge. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Choose Your Login</h2>
+            <div class="modal-options">
+                <a href="j-login.html" class="modal-option">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h3>Junior / Startup</h3>
+                    <p>Seeking guidance and mentorship</p>
+                </a>
+                <a href="s-login.html" class="modal-option">
+                    <i class="fas fa-user-tie"></i>
+                    <h3>Senior Expert</h3>
+                    <p>Share knowledge and earn</p>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Modal functionality
+        const loginBtn = document.getElementById('loginBtn');
+        const modal = document.getElementById('loginModal');
+        const closeModal = document.querySelector('.close-modal');
+
+        if (loginBtn) {
+            loginBtn.onclick = (e) => {
+                e.preventDefault();
+                modal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            };
+        }
+
+        if (closeModal) {
+            closeModal.onclick = () => {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            };
+        }
+
+        window.onclick = (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        };
+
+        // Mobile menu toggle
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+        if (menuToggle) {
+            menuToggle.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+            });
+        }
+    </script>
+</body>
+</html>

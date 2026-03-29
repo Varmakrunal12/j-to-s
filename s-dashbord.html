@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expert Dashboard - WisdomBridge</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="dashbord.css">
+    <link rel="stylesheet" href="animation.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="dashboard.js" defer></script>
+</head>
+<body class="dashboard">
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-bridge"></i> WisdomBridge
+            </div>
+            <div class="user-info">
+                <div class="avatar">
+                    <i class="fas fa-user-tie"></i>
+                </div>
+                <div class="user-details">
+                    <h4>Loading...</h4>
+                    <p>Business Strategy Expert</p>
+                    <span class="status active">● Available</span>
+                </div>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="#" class="nav-item active">
+                <i class="fas fa-home"></i> Dashboard
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-calendar-alt"></i> My Calendar
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-comments"></i> Messages
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-wallet"></i> Earnings
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-user-friends"></i> My Juniors
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-chart-line"></i> Analytics
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-cog"></i> Profile Settings
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <a href="#" class="logout">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-left">
+                <h1>Welcome, Expert</h1>
+                <p>Your wisdom is changing lives today!</p>
+            </div>
+            <div class="header-right">
+                <div class="availability-toggle">
+                    <span>Available for Sessions</span>
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="notification">
+                    <i class="fas fa-bell"></i>
+                    <span class="badge">5</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <div class="dashboard-content">
+            <!-- Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #e3f2fd;">
+                        <i class="fas fa-video" style="color: #1976d2;"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>0</h3>
+                        <p>Total Sessions</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #e8f5e9;">
+                        <i class="fas fa-star" style="color: #388e3c;"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>0</h3>
+                        <p>Average Rating</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #fff3e0;">
+                        <i class="fas fa-rupee-sign" style="color: #f57c00;"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>₹0</h3>
+                        <p>Total Earnings</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #f3e5f5;">
+                        <i class="fas fa-users" style="color: #7b1fa2;"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>0</h3>
+                        <p>Active Juniors</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Today's Schedule -->
+            <div class="section">
+                <h2 class="section-title">Today's Schedule</h2>
+                <div class="schedule-list">
+                    <!-- Loaded dynamically -->
+                </div>
+            </div>
+
+            <!-- Recent Sessions -->
+            <div class="section">
+                <h2 class="section-title">Recent Sessions</h2>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Junior</th>
+                                <th>Topic</th>
+                                <th>Duration</th>
+                                <th>Earnings</th>
+                                <th>Rating</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Loaded dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- New Requests -->
+            <div class="section">
+                <h2 class="section-title">New Session Requests</h2>
+                <div class="requests-grid">
+                    <!-- Loaded dynamically -->
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
