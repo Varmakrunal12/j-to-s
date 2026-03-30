@@ -165,7 +165,13 @@
             e.preventDefault();
             const email = document.getElementById('loginEmail').value;
             const password = document.getElementById('loginPassword').value;
-            await handleLogin(email, password, 'junior');
+           try {
+  const userCredential = await firebase.auth().signInWithEmailAndPassword(email, password);
+  // Login successful → dashboard pe bhejo
+  window.location.href = 'j-dashbord.html';
+} catch (error) {
+  alert('Login failed: ' + error.message);
+}
         });
 
         // Register form
