@@ -1,48 +1,72 @@
-// Wait for Firebase auth state
+// ========== AUTH CHECK + USER DATA LOAD ==========
 firebase.auth().onAuthStateChanged(async (user) => {
   if (!user) {
-    // Logged in nahi hai → login page pe bhejo
-    window.location.href = 'j-login.html';
+    // Login nahi hai → login page pe bhejo
+    window.location.href = "j-login.html";
     return;
   }
 
-  // Firestore se user data fetch karo
   try {
-    const doc = await firebase.firestore()
-      .collection('users')
-      .doc(user.uid)
-      .get();
+    const doc = await db.collection("users").doc(user.uid).get();
 
     if (doc.exists) {
       const data = doc.data();
 
-      // Sidebar mein naam update karo
-      const userNameEl = document.querySelector('.user-details h4');
-      if (userNameEl) userNameEl.textContent = data.fullName || user.displayName || 'User';
+      const fullName = data.fullName || user.displayName || "User";
+      const firstName = fullName.split(" ")[0];
+      const role = data.type || data.role || "Junior";
+      const interest = data.primaryInterest || "";
 
-      // Sidebar mein role update karo
-      const userRoleEl = document.querySelector('.user-details p');
-      if (userRoleEl) userRoleEl.textContent = data.role || 'Junior';
+      // Sidebar — naam
+      const nameEl = document.querySelector(".user-details h4");
+      if (nameEl) nameEl.textContent = fullName;
 
-      // Header welcome message update karo
-      const headerTitle = document.querySelector('.header-left h1');
-      if (headerTitle) headerTitle.textContent = `Welcome, ${data.fullName?.split(' ')[0] || 'User'}!`;
+      // Sidebar — role/type
+      const roleEl = document.querySelector(".user-details p");
+      if (roleEl) roleEl.textContent = capitalize(role);
+
+      // Header — welcome message
+      const headerTitle = document.querySelector(".header-left h1");
+      if (headerTitle) headerTitle.textContent = `Welcome, ${firstName}!`;
+
+      // Header — subtitle
+      const headerSub = document.querySelector(".header-left p");
+      if (headerSub && interest) {
+        headerSub.textContent = `Your focus: ${capitalize(interest)}`;
+      }
+
     } else {
-      // Firestore mein data nahi hai → auth name use karo
-      const userNameEl = document.querySelector('.user-details h4');
-      if (userNameEl) userNameEl.textContent = user.displayName || user.email;
+      // Firestore data nahi mila — auth se kaam chalao
+      const nameEl = document.querySelector(".user-details h4");
+      if (nameEl) nameEl.textContent = user.displayName || user.email;
 
-      const headerTitle = document.querySelector('.header-left h1');
-      if (headerTitle) headerTitle.textContent = `Welcome, ${user.displayName || 'User'}!`;
+      const headerTitle = document.querySelector(".header-left h1");
+      if (headerTitle) {
+        const name = user.displayName?.split(" ")[0] || "User";
+        headerTitle.textContent = `Welcome, ${name}!`;
+      }
     }
+
   } catch (err) {
-    console.error('Error loading user data:', err);
+    console.error("User data load error:", err);
   }
 });
 
-// Logout button
-document.querySelector('.logout')?.addEventListener('click', async (e) => {
+// ========== LOGOUT ==========
+document.querySelector(".logout")?.addEventListener("click", async (e) => {
   e.preventDefault();
   await firebase.auth().signOut();
-  window.location.href = 'j-login.html';
+  window.location.href = "j-login.html";
+});
+
+// ========== HELPER ==========
+function capitalize(str) {
+  if (!str) return "";
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+// ========== FIND EXPERT BUTTON ==========
+document.getElementById("findExpertBtn")?.addEventListener("click", () => {
+  // Aap baad mein yahan expert search page ka link daal sakte ho
+  alert("Expert search coming soon!");
 });
