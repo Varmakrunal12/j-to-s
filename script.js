@@ -1,103 +1,114 @@
-// script.js - Common Firebase Functions
-
-// Show alert function
-function showAlert(message, type = 'info') {
-  const alertDiv = document.createElement('div');
-  alertDiv.className = `custom-alert alert-${type}`;
-  alertDiv.innerHTML = `
-    <div style="display: flex; align-items: center; gap: 15px;">
-      <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
-      <span>${message}</span>
-      <button class="alert-close" style="margin-left: auto; background: none; border: none; cursor: pointer;"><i class="fas fa-times"></i></button>
-    </div>
-  `;
-  alertDiv.style.cssText = `
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background: ${type === 'success' ? '#2ecc71' : type === 'error' ? '#e74c3c' : '#3498db'};
-    color: white;
-    padding: 15px 20px;
-    border-radius: 10px;
-    z-index: 10000;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    animation: slideInRight 0.3s ease;
-  `;
-  document.body.appendChild(alertDiv);
-  const closeBtn = alertDiv.querySelector('.alert-close');
-  closeBtn.onclick = () => alertDiv.remove();
-  setTimeout(() => alertDiv.remove(), 5000);
-}
-
-// Login handler
-async function handleLogin(email, password, userType) {
+// ========== EMAIL LOGIN ==========
+async function handleLogin(email, password, role) {
   try {
-    const userCredential = await auth.signInWithEmailAndPassword(email, password);
-    const user = userCredential.user;
-    const userDoc = await db.collection('users').doc(user.uid).get();
-    if (!userDoc.exists) {
-      throw new Error('User data not found. Please register first.');
+    const result = await auth.signInWithEmailAndPassword(email, password);
+    const user = result.user;
+
+    // Firestore se user ka role check karo
+    const doc = await db.collection("users").doc(user.uid).get();
+
+    if (!doc.exists) {
+      alert("User not found in database. Please register first.");
+      await auth.signOut();
+      return;
     }
-    const userData = userDoc.data();
-    if (userData.userType !== userType) {
-      throw new Error(`You are registered as ${userData.userType}. Please login from the correct portal.`);
+
+    const userData = doc.data();
+
+    if (userData.role !== role) {
+      alert(`This account is registered as '${userData.role}', not '${role}'. Please use the correct login page.`);
+      await auth.signOut();
+      return;
     }
-    localStorage.setItem('wisdomBridgeUserType', userData.userType);
-    localStorage.setItem('wisdomBridgeUserName', userData.fullName);
-    localStorage.setItem('wisdomBridgeUserId', user.uid);
-    showAlert('Login successful!', 'success');
-    const redirectUrl = userData.userType === 'senior' ? 's-dashbord.html' : 'j-dashbord.html';
-    setTimeout(() => {
-      window.location.href = redirectUrl;
-    }, 1500);
+
+    // Redirect
+    if (role === "junior") {
+      window.location.href = "j-dashbord.html";
+    } else {
+      window.location.href = "s-dashbord.html";
+    }
+
   } catch (error) {
-    showAlert(error.message, 'error');
+    console.error("Login error:", error);
+    if (error.code === "auth/user-not-found") {
+      alert("No account found with this email. Please register first.");
+    } else if (error.code === "auth/wrong-password") {
+      alert("Wrong password. Please try again.");
+    } else if (error.code === "auth/invalid-email") {
+      alert("Invalid email format.");
+    } else {
+      alert("Login failed: " + error.message);
+    }
   }
 }
 
-// Registration handler
-async function handleRegister(userData, userType) {
+// ========== EMAIL REGISTER ==========
+async function handleRegister(userData, role) {
   try {
-    const userCredential = await auth.createUserWithEmailAndPassword(userData.email, userData.password);
-    const user = userCredential.user;
-    const userDoc = {
-      uid: user.uid,
-      email: userData.email,
+    const result = await auth.createUserWithEmailAndPassword(userData.email, userData.password);
+    const user = result.user;
+
+    // Firestore mein save karo
+    await db.collection("users").doc(user.uid).set({
       fullName: userData.fullName,
-      userType: userType,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-    };
-    if (userType === 'junior') {
-      userDoc.role = userData.role;
-      userDoc.primaryInterest = userData.primaryInterest;
-    } else if (userType === 'senior') {
-      userDoc.experience = userData.experience;
-      userDoc.industry = userData.industry;
-      userDoc.specialization = userData.specialization;
-      userDoc.hourlyRate = userData.hourlyRate;
-      userDoc.bio = userData.bio;
-      userDoc.availability = true;
-    }
-    await db.collection('users').doc(user.uid).set(userDoc);
-    localStorage.setItem('wisdomBridgeUserType', userType);
-    localStorage.setItem('wisdomBridgeUserName', userData.fullName);
-    localStorage.setItem('wisdomBridgeUserId', user.uid);
-    showAlert('Registration successful! Redirecting...', 'success');
-    const redirectUrl = userType === 'senior' ? 's-dashbord.html' : 'j-dashbord.html';
-    setTimeout(() => {
-      window.location.href = redirectUrl;
-    }, 1500);
+      email: userData.email,
+      role: role,
+      type: userData.role || "",
+      primaryInterest: userData.primaryInterest || "",
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    alert("Account created successfully! Please login.");
+
+    // Register ke baad login tab pe le jao
+    document.querySelector('[data-tab="login"]').click();
+
   } catch (error) {
-    showAlert(error.message, 'error');
+    console.error("Register error:", error);
+    if (error.code === "auth/email-already-in-use") {
+      alert("This email is already registered. Please login instead.");
+    } else if (error.code === "auth/weak-password") {
+      alert("Password must be at least 6 characters.");
+    } else if (error.code === "auth/invalid-email") {
+      alert("Invalid email format.");
+    } else {
+      alert("Registration failed: " + error.message);
+    }
   }
 }
 
-// Logout function
-function logout() {
-  auth.signOut().then(() => {
-    localStorage.clear();
-    window.location.href = 'index.html';
-  }).catch(error => {
-    showAlert('Error logging out: ' + error.message, 'error');
-  });
+// ========== GOOGLE LOGIN ==========
+async function signInWithGoogle(role) {
+  try {
+    const result = await auth.signInWithPopup(googleProvider);
+    const user = result.user;
+
+    // Check karo user already hai ya naya hai
+    const doc = await db.collection("users").doc(user.uid).get();
+
+    if (!doc.exists) {
+      // Naya user — Firestore mein save karo
+      await db.collection("users").doc(user.uid).set({
+        fullName: user.displayName,
+        email: user.email,
+        role: role,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    }
+
+    // Redirect
+    if (role === "junior") {
+      window.location.href = "j-dashbord.html";
+    } else {
+      window.location.href = "s-dashbord.html";
+    }
+
+  } catch (error) {
+    console.error("Google login error:", error);
+    if (error.code === "auth/popup-closed-by-user") {
+      // User ne popup band kiya — koi alert nahi
+    } else {
+      alert("Google login failed: " + error.message);
+    }
+  }
 }
