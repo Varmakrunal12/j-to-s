@@ -1,3 +1,24 @@
+console.log("dashbord.js loaded!");
+
+firebase.auth().onAuthStateChanged(async (user) => {
+  console.log("Auth state:", user); // ← user null hai ya object?
+  
+  if (!user) {
+    console.log("No user logged in!");
+    return; // redirect hata diya temporarily
+  }
+
+  console.log("User UID:", user.uid);
+  console.log("User email:", user.email);
+
+  try {
+    const doc = await db.collection("users").doc(user.uid).get();
+    console.log("Doc exists:", doc.exists);
+    console.log("Doc data:", doc.data()); // ← Firestore ka data dekho
+  } catch(err) {
+    console.error("Firestore error:", err);
+  }
+});
 // ========== AUTH CHECK + USER DATA LOAD ==========
 firebase.auth().onAuthStateChanged(async (user) => {
   if (!user) {
