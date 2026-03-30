@@ -180,6 +180,16 @@
             };
             await handleRegister(userData, 'junior');
         });
+        // Google Sign-In
+function signInWithGoogle() {
+  auth.signInWithPopup(googleProvider)
+    .then((result) => {
+      console.log("User logged in:", result.user);
+    })
+    .catch((error) => {
+      console.error("Google login error:", error.message);
+    });
+}
     </script>
 </body>
 </html>
