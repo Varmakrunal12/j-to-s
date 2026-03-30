@@ -527,9 +527,8 @@ body {
     justify-content: center;
     padding: 20px;
     position: relative;
-    overflow: hidden;
+    overflow: auto;  /* ← changed from 'hidden' to allow scrolling */
 }
-
 .login-page:before {
     content: '';
     position: absolute;
