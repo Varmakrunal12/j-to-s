@@ -8,7 +8,6 @@ async function handleLogin(email, password, role) {
     const result = await auth.signInWithEmailAndPassword(email, password);
     const user = result.user;
 
-    // Firestore se user ka role check karo
     const doc = await db.collection("users").doc(user.uid).get();
 
     if (!doc.exists) {
@@ -19,14 +18,18 @@ async function handleLogin(email, password, role) {
 
     const userData = doc.data();
 
-    if (userData.role !== role) {
-      alert(`This account is registered as '${userData.role}', not '${role}'. Please use the correct login page.`);
+    // ✅ Role check - case insensitive fix
+    const userRole = userData.role?.toLowerCase().trim();
+    const expectedRole = role?.toLowerCase().trim();
+
+    if (userRole !== expectedRole) {
+      alert(`⚠️ This account is registered as '${userRole}'. Please use the correct login page.`);
       await auth.signOut();
       return;
     }
 
     // ✅ Redirect
-    if (role === "junior") {
+    if (userRole === "junior") {
       window.location.href = "j-dashbord.html";
     } else {
       window.location.href = "s-dashbord.html";
@@ -34,8 +37,8 @@ async function handleLogin(email, password, role) {
 
   } catch (error) {
     console.error("Login error:", error);
+    console.log("Error code:", error.code); // ← yeh console mein dikhega
 
-    // ✅ Improved error handling — raw JSON nahi dikhega
     if (
       error.code === "auth/user-not-found" ||
       error.code === "auth/invalid-credential" ||
@@ -48,10 +51,9 @@ async function handleLogin(email, password, role) {
     } else if (error.code === "auth/invalid-email") {
       alert("❌ Invalid email format.");
     } else if (error.code === "auth/too-many-requests") {
-      alert("⚠️ Too many failed attempts. Please try again later.");
-    } else if (error.code === "auth/user-disabled") {
-      alert("⚠️ This account has been disabled. Contact support.");
+      alert("⚠️ Too many failed attempts. Please wait and try again.");
     } else {
+      // ✅ Ab raw JSON nahi dikhega — clean message
       alert("❌ Login failed. Please check your email and password.");
     }
   }
