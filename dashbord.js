@@ -1,7 +1,6 @@
 // ========== AUTH CHECK + USER DATA LOAD ==========
 firebase.auth().onAuthStateChanged(async (user) => {
   if (!user) {
-    // Login nahi hai → login page pe bhejo
     window.location.href = "j-login.html";
     return;
   }
@@ -21,11 +20,11 @@ firebase.auth().onAuthStateChanged(async (user) => {
       const nameEl = document.querySelector(".user-details h4");
       if (nameEl) nameEl.textContent = fullName;
 
-      // Sidebar — role/type
+      // Sidebar — role
       const roleEl = document.querySelector(".user-details p");
       if (roleEl) roleEl.textContent = capitalize(role);
 
-      // Header — welcome message
+      // Header — welcome
       const headerTitle = document.querySelector(".header-left h1");
       if (headerTitle) headerTitle.textContent = `Welcome, ${firstName}!`;
 
@@ -34,19 +33,7 @@ firebase.auth().onAuthStateChanged(async (user) => {
       if (headerSub && interest) {
         headerSub.textContent = `Your focus: ${capitalize(interest)}`;
       }
-
-    } else {
-      // Firestore data nahi mila — auth se kaam chalao
-      const nameEl = document.querySelector(".user-details h4");
-      if (nameEl) nameEl.textContent = user.displayName || user.email;
-
-      const headerTitle = document.querySelector(".header-left h1");
-      if (headerTitle) {
-        const name = user.displayName?.split(" ")[0] || "User";
-        headerTitle.textContent = `Welcome, ${name}!`;
-      }
     }
-
   } catch (err) {
     console.error("User data load error:", err);
   }
