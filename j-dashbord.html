@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="dashbord.css">
     <link rel="stylesheet" href="animation.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
@@ -16,6 +15,11 @@
     <script src="dashbord.js" defer></script>
 </head>
 <body class="dashboard">
+
+    <!-- Mobile Sidebar Toggle Button -->
+    <button class="dashboard-menu-toggle" id="sidebarToggle">
+        <i class="fas fa-bars"></i>
+    </button>
 
     <!-- Sidebar -->
     <div class="sidebar">
@@ -29,7 +33,7 @@
                 </div>
                 <div class="user-details">
                     <h4>Loading...</h4>
-                    <p>Startup Founder</p>
+                    <p>Junior</p>
                 </div>
             </div>
         </div>
@@ -38,20 +42,14 @@
             <a href="#" class="nav-item active">
                 <i class="fas fa-home"></i> Dashboard
             </a>
-            <a href="#" class="nav-item" onclick="document.querySelector('.experts-grid').scrollIntoView({behavior:'smooth'})">
+            <a href="#" class="nav-item" onclick="document.querySelector('.experts-grid').scrollIntoView({behavior:'smooth'}); return false;">
                 <i class="fas fa-search"></i> Find Experts
             </a>
-            <a href="#" class="nav-item" onclick="document.querySelector('.sessions-list').scrollIntoView({behavior:'smooth'})">
+            <a href="#" class="nav-item" onclick="document.querySelector('.sessions-list').scrollIntoView({behavior:'smooth'}); return false;">
                 <i class="fas fa-calendar-check"></i> My Sessions
-            </a>
-            <a href="#" class="nav-item" id="openMessagesBtn">
-                <i class="fas fa-comments"></i> Messages
             </a>
             <a href="#" class="nav-item">
                 <i class="fas fa-wallet"></i> Payments
-            </a>
-            <a href="#" class="nav-item">
-                <i class="fas fa-bookmark"></i> Saved Experts
             </a>
             <a href="#" class="nav-item">
                 <i class="fas fa-cog"></i> Settings
@@ -80,7 +78,7 @@
                 </button>
                 <div class="notification">
                     <i class="fas fa-bell"></i>
-                    <span class="badge">0</span>
+                    <span class="badge" style="display:none;">0</span>
                 </div>
             </div>
         </header>
@@ -91,8 +89,8 @@
             <!-- Stats -->
             <div class="stats-grid">
                 <div class="stat-card">
-                    <div class="stat-icon" style="background: #e3f2fd;">
-                        <i class="fas fa-video" style="color: #1976d2;"></i>
+                    <div class="stat-icon" style="background:#e3f2fd;">
+                        <i class="fas fa-video" style="color:#1976d2;"></i>
                     </div>
                     <div class="stat-info">
                         <h3>0</h3>
@@ -100,8 +98,8 @@
                     </div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-icon" style="background: #e8f5e9;">
-                        <i class="fas fa-star" style="color: #388e3c;"></i>
+                    <div class="stat-icon" style="background:#e8f5e9;">
+                        <i class="fas fa-star" style="color:#388e3c;"></i>
                     </div>
                     <div class="stat-info">
                         <h3>0</h3>
@@ -109,17 +107,17 @@
                     </div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-icon" style="background: #fff3e0;">
-                        <i class="fas fa-rupee-sign" style="color: #f57c00;"></i>
+                    <div class="stat-icon" style="background:#fff3e0;">
+                        <i class="fas fa-rupee-sign" style="color:#f57c00;"></i>
                     </div>
                     <div class="stat-info">
-                        <h3>₹0</h3>
+                        <h3>Rs. 0</h3>
                         <p>Total Spent</p>
                     </div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-icon" style="background: #f3e5f5;">
-                        <i class="fas fa-clock" style="color: #7b1fa2;"></i>
+                    <div class="stat-icon" style="background:#f3e5f5;">
+                        <i class="fas fa-clock" style="color:#7b1fa2;"></i>
                     </div>
                     <div class="stat-info">
                         <h3>0</h3>
@@ -169,7 +167,7 @@
             <div class="section">
                 <h2 class="section-title">Recommended Experts</h2>
                 <div class="experts-grid">
-                    <!-- Loaded dynamically by dashbord.js -->
+                    <!-- Loaded dynamically -->
                 </div>
             </div>
 
@@ -177,7 +175,7 @@
             <div class="section">
                 <h2 class="section-title">My Sessions</h2>
                 <div class="sessions-list">
-                    <!-- Loaded dynamically by dashbord.js -->
+                    <!-- Loaded dynamically -->
                 </div>
             </div>
 
