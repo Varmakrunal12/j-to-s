@@ -12,10 +12,11 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-   <script src="firebase-config.js"></script>
-<script src="dashbord.js" defer></script>
+    <script src="firebase-config.js"></script>
+    <script src="dashbord.js" defer></script>
 </head>
 <body class="dashboard">
+
     <!-- Sidebar -->
     <div class="sidebar">
         <div class="sidebar-header">
@@ -37,13 +38,13 @@
             <a href="#" class="nav-item active">
                 <i class="fas fa-home"></i> Dashboard
             </a>
-            <a href="#" class="nav-item">
+            <a href="#" class="nav-item" onclick="document.querySelector('.experts-grid').scrollIntoView({behavior:'smooth'})">
                 <i class="fas fa-search"></i> Find Experts
             </a>
-            <a href="#" class="nav-item">
+            <a href="#" class="nav-item" onclick="document.querySelector('.sessions-list').scrollIntoView({behavior:'smooth'})">
                 <i class="fas fa-calendar-check"></i> My Sessions
             </a>
-            <a href="#" class="nav-item">
+            <a href="#" class="nav-item" id="openMessagesBtn">
                 <i class="fas fa-comments"></i> Messages
             </a>
             <a href="#" class="nav-item">
@@ -66,6 +67,7 @@
 
     <!-- Main Content -->
     <div class="main-content">
+
         <!-- Header -->
         <header class="dashboard-header">
             <div class="header-left">
@@ -78,13 +80,14 @@
                 </button>
                 <div class="notification">
                     <i class="fas fa-bell"></i>
-                    <span class="badge">3</span>
+                    <span class="badge">0</span>
                 </div>
             </div>
         </header>
 
         <!-- Dashboard Content -->
         <div class="dashboard-content">
+
             <!-- Stats -->
             <div class="stats-grid">
                 <div class="stat-card">
@@ -125,43 +128,40 @@
                 </div>
             </div>
 
-            <!-- Categories -->
+            <!-- Browse by Category -->
             <div class="section">
                 <h2 class="section-title">Browse by Category</h2>
                 <div class="categories-grid">
                     <div class="category-box" onclick="searchCategory('business')">
                         <i class="fas fa-chart-line"></i>
                         <h4>Business Strategy</h4>
-                        <p>45 Experts</p>
+                        <p>Find Experts</p>
                     </div>
                     <div class="category-box" onclick="searchCategory('technology')">
                         <i class="fas fa-code"></i>
                         <h4>Technology</h4>
-                        <p>32 Experts</p>
+                        <p>Find Experts</p>
                     </div>
                     <div class="category-box" onclick="searchCategory('finance')">
                         <i class="fas fa-balance-scale"></i>
                         <h4>Finance & Legal</h4>
-                        <p>28 Experts</p>
+                        <p>Find Experts</p>
                     </div>
                     <div class="category-box" onclick="searchCategory('marketing')">
                         <i class="fas fa-bullhorn"></i>
                         <h4>Marketing</h4>
-                        <p>24 Experts</p>
+                        <p>Find Experts</p>
                     </div>
                     <div class="category-box" onclick="searchCategory('career')">
                         <i class="fas fa-graduation-cap"></i>
                         <h4>Career Guidance</h4>
-                        <p>38 Experts</p>
+                        <p>Find Experts</p>
                     </div>
-                </div>
-            </div>
-
-            <!-- Upcoming Sessions -->
-            <div class="section">
-                <h2 class="section-title">Upcoming Sessions</h2>
-                <div class="sessions-list">
-                    <!-- Loaded dynamically -->
+                    <div class="category-box" onclick="searchCategory('operations')">
+                        <i class="fas fa-cogs"></i>
+                        <h4>Operations</h4>
+                        <p>Find Experts</p>
+                    </div>
                 </div>
             </div>
 
@@ -169,10 +169,20 @@
             <div class="section">
                 <h2 class="section-title">Recommended Experts</h2>
                 <div class="experts-grid">
-                    <!-- Loaded dynamically -->
+                    <!-- Loaded dynamically by dashbord.js -->
                 </div>
             </div>
+
+            <!-- My Sessions -->
+            <div class="section">
+                <h2 class="section-title">My Sessions</h2>
+                <div class="sessions-list">
+                    <!-- Loaded dynamically by dashbord.js -->
+                </div>
+            </div>
+
         </div>
     </div>
+
 </body>
 </html>
